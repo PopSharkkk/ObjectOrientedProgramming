@@ -4,7 +4,7 @@
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3B82F6?style=for-the-badge)](LICENSE)
 
-> **Course:** EF234302 Object-Oriented Programming (Class D) — Midterm Examination  
+> **Course:** EF234302 Object-Oriented Programming (Class D) — Midterm Examination & Quiz 2  
 > **Institution:** Department of Informatics, Faculty of Intelligent Electrical and Informatics Technology (FTEIC), Institut Teknologi Sepuluh Nopember (ITS), Surabaya  
 > **Academic Year:** Semester Odd 2026/2027  
 > **Instructor:** MM Irfan Subakti  
@@ -19,33 +19,53 @@
 ObjectOrientedProgramming/
 ├── README.md
 ├── .gitignore
-└── Midterm/
-    ├── Q1/                  # Question 1: Weekly Load Statistics (15 marks)
-    │   ├── java/WeeklyLoad.java
-    │   └── python/weekly_load.py
-    ├── Q2/                  # Question 2: Custom Checked Exception (20 marks)
-    │   ├── java/OverloadException.java
-    │   ├── java/Washer.java
-    │   ├── java/LoadingBay.java
-    │   └── python/loading_bay.py
-    ├── Q3/                  # Question 3: Rounding Bugfix & Boundary Tests (20 marks)
-    │   ├── java/Pricing.java
-    │   ├── java/PricingCheck.java
-    │   ├── python/pricing.py
-    │   └── python/test_pricing.py
-    ├── Q4/                  # Question 4: Dynamic Dispatch & Static Overloading (20 marks)
+├── Midterm/
+│   ├── Q1/                  # Question 1: Weekly Load Statistics (15 marks)
+│   │   ├── java/WeeklyLoad.java
+│   │   └── python/weekly_load.py
+│   ├── Q2/                  # Question 2: Custom Checked Exception (20 marks)
+│   │   ├── java/OverloadException.java
+│   │   ├── java/Washer.java
+│   │   ├── java/LoadingBay.java
+│   │   └── python/loading_bay.py
+│   ├── Q3/                  # Question 3: Rounding Bugfix & Boundary Tests (20 marks)
+│   │   ├── java/Pricing.java
+│   │   ├── java/PricingCheck.java
+│   │   ├── python/pricing.py
+│   │   └── python/test_pricing.py
+│   ├── Q4/                  # Question 4: Dynamic Dispatch & Static Overloading (20 marks)
+│   │   ├── ANSWER.md
+│   │   ├── java/Dispatch.java
+│   │   └── python/dispatch.py
+│   └── Q5/                  # Question 5: Machine Room Scheduling Capstone (25 marks)
+│       ├── data/jobs.txt
+│       ├── jobs.txt
+│       ├── java/Machine.java
+│       ├── java/Washer.java
+│       ├── java/Dryer.java
+│       ├── java/ScheduleException.java
+│       ├── java/MachineRoom.java
+│       └── python/machine_room.py
+└── Quiz2/
+    ├── Q051/                # Question 1: Orders per Service — Map Tally (15 marks, template)
     │   ├── ANSWER.md
-    │   ├── java/Dispatch.java
-    │   └── python/dispatch.py
-    └── Q5/                  # Question 5: Machine Room Scheduling Capstone (25 marks)
-        ├── data/jobs.txt
-        ├── jobs.txt
-        ├── java/Machine.java
-        ├── java/Washer.java
-        ├── java/Dryer.java
-        ├── java/ScheduleException.java
-        ├── java/MachineRoom.java
-        └── python/machine_room.py
+    │   ├── java/ServiceTally.java
+    │   └── python/service_tally.py
+    ├── Q053/                # Question 2: Generic Multiset Bag<T> (20 marks, template)
+    │   ├── java/BagDemo.java
+    │   └── python/bag_demo.py
+    ├── Q054/                # Question 4: Wildcards & Variance at the Sorting Desk (20 marks, template)
+    │   ├── ANSWER.md
+    │   ├── java/WildcardDesk.java
+    │   └── python/wildcard_desk.py
+    ├── Q060/                # Question 3: Tracing Listeners of a Quote Panel (20 marks)
+    │   ├── ANSWER.md
+    │   ├── java/QuotePanel.java
+    │   └── python/quote_panel.py
+    └── Q075/                # Question 5: Filtered, Sorted Order List View-Model Capstone (25 marks)
+        ├── ANSWER.md
+        ├── java/OrderListViewModel.java
+        └── python/order_list_view_model.py
 ```
 
 ---
@@ -132,6 +152,71 @@ cd Midterm/Q5 && javac -d classes java/*.java && java -cp classes MachineRoom
 
 # Python
 cd Midterm/Q5 && python python/machine_room.py
+```
+
+---
+
+## Quiz 2 Problem Summary & Verification
+
+Quiz 2 covers Chapters 9–11 (Collections & Generics, Event-Driven UI Listeners, and MVC/MVVM architecture). Currently completed: **Q060** and **Q075** (`Q051`, `Q053`, and `Q054` remain as starter templates).
+
+### Q060 — Tracing the Listeners of a Quote Panel (20 Marks)
+Demonstrates event-driven GUI architecture with pure, UI-free pricing rules separated from Swing (`QuotePanel.View`) and Tkinter (`QuoteController`):
+- **`quote(...)`:** Parses and validates weight in `(0, 50]`, applies each service's minimum weight (`WF` 3 kg, `IR` 2 kg, `WDI` 3 kg), rounds chargeable weight up to the next half-kilogram, and applies Express pricing (`⌊3P/2⌋`) and turnaround (`max(6, ⌊h/4⌋)` hours).
+- **`refresh(explicit)`:** Increments `handled` on every listener event; sets `quoted` on explicit requests (*Quote* button or Enter) and re-quotes on combo box / Express checkbox changes only once `quoted` is set.
+- **Written Analysis ([Quiz2/Q060/ANSWER.md](Quiz2/Q060/ANSWER.md)):** Full step-by-step trace (steps 0–9) plus explanation of why typing `abc` at step 5 leaves a stale label (text edits do not fire `ActionEvent`) and how to fix it via Swing's `DocumentListener` (`DocumentEvent`) or Tkinter's `StringVar.trace_add("write", ...)`.
+
+**Execution:**
+```bash
+# Java (headless self-test)
+cd Quiz2/Q060 && javac -d classes java/*.java && java -cp classes QuotePanel --selftest
+
+# Python (window-free controller self-test)
+cd Quiz2/Q060 && python python/quote_panel.py --selftest
+```
+**Expected Output:**
+```text
+0. start             handled=0  label: (no quote yet)
+1. type 4.2          handled=0  label: (no quote yet)
+2. click Quote       handled=1  label: WF 4.5 kg: Rp31,500, ready in 48 h
+3. tick Express      handled=2  label: WF 4.5 kg express: Rp47,250, ready in 12 h
+4. choose WDI        handled=3  label: WDI 4.5 kg express: Rp67,500, ready in 18 h
+5. type abc          handled=3  label: WDI 4.5 kg express: Rp67,500, ready in 18 h
+6. press Enter       handled=4  label: invalid weight: enter a number
+7. untick Express    handled=5  label: invalid weight: enter a number
+8. choose IR         handled=6  label: invalid weight: enter a number
+9. type 0.4, click   handled=7  label: IR 2.0 kg: Rp10,000, ready in 24 h
+```
+
+---
+
+### Q075 — Filtered, Sorted Order List View-Model Capstone (25 Marks)
+Integrates Chapters 9–11 via an MVVM `OrderListViewModel` sitting between `OrderBook` and the list widget:
+- **Comparator Chains & Sort Keys:** `BY_READY` (`readyHour`, then `id`) and `BY_CUSTOMER` (case-insensitive customer name, then `id`) in Java (`Comparator.comparingInt` / `Comparator.comparing` + `thenComparing`), mirrored by tuple keys in Python.
+- **Change-Driven Recompute:** Filters by case-insensitive customer substring and optional `Status`, sorts, formats each row (`<id> <customer> <service> <status> <HH>:00`), and notifies the view callback (`Consumer<List<String>>` / callable) **only when the computed rows actually change** (`!rows.equals(shown)` / `rows != self.shown`).
+- **Written Analysis ([Quiz2/Q075/ANSWER.md](Quiz2/Q075/ANSWER.md)):** Complete 10-event trace, rationale for row diffing and headless testability, and breakdown of Chapter 9 collection/generics patterns used.
+
+**Execution:**
+```bash
+# Java
+cd Quiz2/Q075 && javac -d classes java/*.java && java -cp classes OrderListViewModel
+
+# Python
+cd Quiz2/Q075 && python python/order_list_view_model.py
+```
+**Expected Output:**
+```text
+0. attach -> [A2 Budi WDI READY 11:00, A4 Dewi WF READY 12:00, A5 Rahmat WDI WASHING 13:00, A1 Sari WF WASHING 14:00, A6 Citra WF DRYING 15:00, A3 Ayu IR RECEIVED 16:00]
+1. filter 'ra' -> [A5 Rahmat WDI WASHING 13:00, A6 Citra WF DRYING 15:00]
+2. sort by customer -> [A6 Citra WF DRYING 15:00, A5 Rahmat WDI WASHING 13:00]
+3. add A7 Budi -> (no update)
+4. advance A5 -> [A6 Citra WF DRYING 15:00, A5 Rahmat WDI DRYING 13:00]
+5. filter 'RA' -> (no update)
+6. only DRYING -> (no update)
+7. advance A6 -> [A5 Rahmat WDI DRYING 13:00]
+8. filter '' -> (no update)
+9. only READY -> [A2 Budi WDI READY 11:00, A6 Citra WF READY 15:00, A4 Dewi WF READY 12:00]
+view updates: 6 for 10 events
 ```
 
 ---
