@@ -21,8 +21,10 @@ public class ServiceTally {
             String[] part = entry.split(":");
             String code = part[0];
             double weight = Double.parseDouble(part[1]);
-            // TODO(Q051): count.merge(code, 1, Integer::sum);
-            // TODO(Q051): kg.merge(code, weight, Double::sum);
+            // (Q051): count.merge(code, 1, Integer::sum);
+            count.merge(code, 1, Integer::sum);
+            // (Q051): kg.merge(code, weight, Double::sum);
+            kg.merge(code, weight, Double::sum);
         }
         System.out.println("(a)+(b) per service, in code order:");
         for (Map.Entry<String, Integer> e : count.entrySet()) {
@@ -31,7 +33,9 @@ public class ServiceTally {
 
         // (c) ranking: more orders first; equal orders -> more kilograms first.
         List<String> codes = new ArrayList<>(count.keySet());
-        // TODO(Q051): sort codes by count descending, then by kilograms descending.
+        // (Q051): sort codes by count descending, then by kilograms descending.
+        codes.sort(Comparator.comparing((String code) -> count.get(code)).reversed().thenComparing(code -> kg.get(code), Comparator.reverseOrder()));
+        
         System.out.println("(c) ranking: " + codes);
 
         // (d) the same counts in a HashMap: the order is the hash table's, not ours.

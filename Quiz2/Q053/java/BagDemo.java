@@ -16,19 +16,28 @@ public class BagDemo {
         }
 
         void add(T item, int n) {
-            // TODO(Q053): if (n <= 0) throw new IllegalArgumentException(...);
-            //   counts.merge(item, n, Integer::sum); size += n;
+            // (Q053): if (n <= 0) throw new IllegalArgumentException(...);
+            if (n <= 0) throw new IllegalArgumentException("n must be positive: " + n);
+            counts.merge(item, n, Integer::sum); size += n;
         }
 
         /** Object, not T, like Collection.contains: asking about a stranger is not an error. */
         int count(Object item) {
-            // TODO(Q053): return counts.getOrDefault(item, 0);
-            return 0;
+            // (Q053): return counts.getOrDefault(item, 0);
+            return counts.getOrDefault(item, 0);
         }
 
         boolean remove(T item) {
-            // TODO(Q053): if absent return false; if count == 1 remove the key, else decrement; size--;
-            return false;
+            // (Q053): if absent return false; if count == 1 remove the key, else decrement; size--;
+            if (counts.getOrDefault(item, 0) == 0){
+                return false;
+            }else if (counts.get(item) == 1){
+                counts.remove(item);
+            }else{
+                counts.put(item, counts.get(item) - 1);
+            }
+            size--;
+            return true;
         }
 
         int size() {
@@ -36,26 +45,40 @@ public class BagDemo {
         }
 
         int distinct() {
-            // TODO(Q053): return counts.size();
-            return 0;
+            // (Q053): return counts.size();
+            return counts.size();
         }
 
         /** The element added most often; on a tie, the one added first. */
         Optional<T> mostCommon() {
-            // TODO(Q053): walk entries in insertion order, keep the first strictly larger count.
-            return Optional.empty();
+            // (Q053): walk entries in insertion order, keep the first strictly larger count.
+            T result = null;
+            int max = 0;
+
+            for (Map.Entry<T, Integer> entry : counts.entrySet()) {
+                if (entry.getValue() > max) {
+                    max = entry.getValue();
+                    result = entry.getKey();
+                }
+            }
+        
+            return Optional.ofNullable(result);
         }
 
         /** A read-only view: callers can look but cannot corrupt size. */
         Map<T, Integer> asMap() {
-            // TODO(Q053): return Collections.unmodifiableMap(counts);
-            return counts;
+            // (Q053): return Collections.unmodifiableMap(counts);
+            return Collections.unmodifiableMap(counts);
         }
 
         /** A generic method: the union of two bags of any subtype of T. */
         static <T> Bag<T> union(Bag<? extends T> a, Bag<? extends T> b) {
-            // TODO(Q053): result = new Bag<>(); a.counts.forEach(result::add); b.counts.forEach(result::add);
-            return new Bag<>();
+            // (Q053): result = new Bag<>(); a.counts.forEach(result::add); b.counts.forEach(result::add);
+            Bag<T> result = new Bag<>();
+            a.counts.forEach(result::add); 
+            b.counts.forEach(result::add);
+            
+            return result;
         }
 
         @Override

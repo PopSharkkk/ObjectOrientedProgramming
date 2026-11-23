@@ -37,21 +37,26 @@ class Sink(Protocol[T_contra]):
 
 
 def total_kg(items: Sequence[Garment]) -> float:
-    # TODO(Q054): return sum(g.grams for g in items) / 1000
-    return 0.0
+    # (Q054): return sum(g.grams for g in items) / 1000
+    return sum(g.grams for g in items) / 1000
 
 
 def add_spare_towels(dst: MutableSequence[Towel], n: int) -> None:
-    # TODO(Q054): for i in range(1, n + 1): dst.append(Towel(f"spare-{i}"))
-
+    # (Q054): for i in range(1, n + 1): dst.append(Towel(f"spare-{i}"))
+    for i in range(1, n + 1): dst.append(Towel(f"spare-{i}"))
 
 def add_spare_towels_anywhere(dst: Sink[Towel], n: int) -> None:
-    # TODO(Q054): for i in range(1, n + 1): dst.append(Towel(f"spare-{i}"))
+    # (Q054): for i in range(1, n + 1): dst.append(Towel(f"spare-{i}"))
+    for i in range(1, n + 1): dst.append(Towel(f"spare-{i}"))
 
 
 def transfer(src: Iterable[T], dst: List[T]) -> int:
-    # TODO(Q054): move every item from src to dst, counting them; return moved
-    return 0
+    # (Q054): move every item from src to dst, counting them; return moved
+    moved = 0
+    for item in src:
+        dst.append(item)
+        moved += 1
+    return moved
 
 
 def main() -> None:

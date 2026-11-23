@@ -44,19 +44,31 @@ public class WildcardDesk {
 
     /** src only PRODUCES garments for us to read: ? extends. */
     static double totalKg(List<? extends Garment> items) {
-        // TODO(Q054): sum the grams of every garment; return grams / 1000.0.
-        return 0.0;
+        // (Q054): sum the grams of every garment; return grams / 1000.0.
+        double grams = 0;
+        for (Garment g : items) {
+            grams += g.grams;
+        }
+        return grams / 1000.0;
     }
 
     /** dst only CONSUMES towels we put in: ? super. */
     static void addSpareTowels(List<? super Towel> dst, int n) {
-        // TODO(Q054): for (int i = 1; i <= n; i++) dst.add(new Towel("spare-" + i));
+        // (Q054): for (int i = 1; i <= n; i++) dst.add(new Towel("spare-" + i));
+        for (int i = 1; i <= n; i++) dst.add(new Towel("spare-" + i));
+    
     }
 
     /** Both at once: read from a producer of T, write into a consumer of T. */
     static <T> int transfer(Collection<? extends T> src, Collection<? super T> dst) {
-        // TODO(Q054): move every item from src to dst, counting them; src.clear(); return moved;
-        return 0;
+        // (Q054): move every item from src to dst, counting them; src.clear(); return moved;
+        int moved = 0;
+        for (T item : src) {
+            dst.add(item);
+            moved++;
+        }
+        src.clear();
+        return moved;
     }
 
     public static void main(String[] args) {
